@@ -3,7 +3,7 @@ import {z} from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
 
 const schema = z.object({
-    name: z.string().min(3, {message: "Name must be at least 3 charactores."}),
+    name: z.string().min(3, {message: "Name must be at least 3 charactors."}),
     age: z.number({invalid_type_error: "Age field is required."}).min(18, {message: "Age must be at least 18."})
 });
 
@@ -12,7 +12,7 @@ type FormData = z.infer<typeof schema>;
 const Form = () => {
     const {register,
         handleSubmit,
-        formState: {errors
+        formState: {errors, isValid
     }} = useForm<FormData>({resolver: zodResolver(schema)});
 
     const onSubmit = (data: FieldValues) => {
@@ -32,7 +32,7 @@ const Form = () => {
                 />
                 {errors.name  && <p className="text-danger">{errors.name.message}</p>}
                 {/*{errors.name?.type === "minLength" &&*/}
-                {/*    <p className="text-danger">Errors must be at least 3 charactores.</p>}*/}
+                {/*    <p className="text-danger">Errors must be at least 3 charactors.</p>}*/}
             </div>
             <div className="mb-3">
                 <label htmlFor="age" className="form-label">Age</label>
@@ -44,7 +44,7 @@ const Form = () => {
                 />
                 {errors.age  && <p className="text-danger">{errors.age.message}</p>}
             </div>
-            <button type="submit" className="btn btn-primary">Submit</button>
+            <button disabled={!isValid} type="submit" className="btn btn-primary">Submit</button>
         </form>
     );
 };
